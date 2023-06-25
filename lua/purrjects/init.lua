@@ -2,56 +2,48 @@ local M = {}
 
 M._opts = {}
 
-local join_path = function(a, b)
-    return vim.fs.normalize(a .. "/" .. b)
-end
+local create_projects_find_command = function(workspace)
+    local workspace_path = workspace[1]
+    workspace_path = vim.fs.normalize(workspace_path)
+    workspace_path = vim.fn.shellescape(workspace_path)
 
-local scan_dir = function(path, opts)
-    opts = opts or {}
-    opts.include_non_directory = opts.include_non_directory or false
+    local max_depth = workspace.max_depth or 1
 
-    local dirs = {}
-    local dir_scanner = vim.loop.fs_scandir(path)
+    local command = "find"
+    command = command .. " " .. workspace_path
+    command = command .. " -type d"
+    command = command .. " -mindepth 1"
+    command = command .. " -maxdepth " .. tostring(max_depth)
 
-    if not dir_scanner then return dirs end
-
-    while true do
-        local file, filetype = vim.loop.fs_scandir_next(dir_scanner)
-
-        if file == nil then return dirs end
-        if filetype == "directory" or opts.include_non_directory then table.insert(dirs, file) end
-    end
-end
-
-local is_project = function(project_path, children_to_match)
-    local empty_children = true
-
-    for _, child_to_match in ipairs(children_to_match) do
-        empty_children = false
-        local project_children = scan_dir(project_path, { include_non_directory = true })
-
-        for _, project_child in ipairs(project_children) do
-            if child_to_match == project_child then return true end
+    if workspace.patterns then
+        command = command .. " \\( "
+        for _, pattern in ipairs(workspace.patterns) do
+            command = command .. "-exec test -e '{}/" .. pattern .. "' \\; -o "
         end
+        command = command:sub(1, -4) .. " \\) -print"
     end
 
-    -- if empty children than this is a project, else not
-    return empty_children
+    return command
 end
 
 M.list_projects = function()
     local projects = {}
 
     for _, workspace in ipairs(M._opts.workspaces) do
-        local workspace_path, children_to_match = unpack(workspace)
-        workspace_path = vim.fs.normalize(workspace_path)
+        local workspace_path = vim.fs.normalize(workspace[1])
 
-        for _, potential_project in ipairs(scan_dir(workspace_path)) do
-            local project_path = join_path(workspace_path, potential_project)
-            if is_project(project_path, children_to_match) then
-                table.insert(projects, { name = potential_project, path = project_path })
-            end
+        local projects_find_command = create_projects_find_command(workspace)
+        local projects_find_output = vim.fn.system(projects_find_command)
+
+        if vim.v.shell_error ~= 0 then goto continue end
+
+        for project_path in projects_find_output:gmatch("[^\r\n]+") do
+            project_path = vim.fs.normalize(project_path)
+            local project_name = project_path:sub(#workspace_path + 2, -1)
+            table.insert(projects, { name = project_name, path = project_path })
         end
+
+        ::continue::
     end
 
     return projects
