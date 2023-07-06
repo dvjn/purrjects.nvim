@@ -7,7 +7,10 @@ local create_projects_find_command = function(workspace)
     workspace_path = vim.fs.normalize(workspace_path)
     workspace_path = vim.fn.shellescape(workspace_path)
 
+    local has_patterns = workspace.patterns and #workspace.patterns > 0
     local max_depth = workspace.max_depth or 1
+
+    if not has_patterns then max_depth = 1 end
 
     local command = "find"
     command = command .. " " .. workspace_path
@@ -15,7 +18,7 @@ local create_projects_find_command = function(workspace)
     command = command .. " -mindepth 1"
     command = command .. " -maxdepth " .. tostring(max_depth)
 
-    if workspace.patterns then
+    if has_patterns then
         command = command .. " \\( "
         for _, pattern in ipairs(workspace.patterns) do
             command = command .. "-exec test -e '{}/" .. pattern .. "' \\; -o "
