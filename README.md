@@ -9,8 +9,8 @@
 
 ## terminology
 
-- **workspace**: a workspace is a folder that contains projects
-- **project**: a project is any folder that contains a file/folder with name in configured patterns
+- **workspace**: a workspace is a directory that contains projects
+- **project**: a project is any directory that contains a file/directory with name in configured patterns
 - **session**: a session is a saved state of a project that can be saved and restored
 
 
@@ -25,7 +25,7 @@ using **lazy.nvim**:
         -- run setup
         require("purrjects").setup({
             workspaces = {
-                { "~/projects", patterns = { ".git" } },
+                { "~/projects", patterns = { ".git" } }, -- patterns are the children files and directories that mark a directory as a project
                 { "~/repos", max_depth = 2, patterns = { ".git", ".svn" } }, -- you can find projects nested in workspace using max_depth value
                 { "~/scratch" }, -- when patterns is empty, all directories in workspace are considered as a project
             },
