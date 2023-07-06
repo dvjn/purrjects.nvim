@@ -42,6 +42,8 @@ using **lazy.nvim**:
 }
 ```
 
+**note:** this requires telescope to be installed.
+
 
 ## inspiration
 
