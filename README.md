@@ -25,9 +25,9 @@ using **lazy.nvim**:
         -- run setup
         require("purrjects").setup({
             workspaces = {
-                -- { "~/projects", patterns = { ".git" } },
-                -- { "~/repos", max_depth = 2, patterns = { ".git", ".svn" } },
-                -- { "~/scratch" },
+                { "~/projects", patterns = { ".git" } },
+                { "~/repos", max_depth = 2, patterns = { ".git", ".svn" } }, -- you can find projects nested in workspace using max_depth value
+                { "~/scratch" }, -- when patterns is empty, all directories in workspace are considered as a project
             },
         })
 
@@ -41,25 +41,6 @@ using **lazy.nvim**:
     end
 }
 ```
-
-
-## configuration
-
-### setup parameters
-
-| parameter    | default | type | description               |
-| ------------ | ------- | ---- | ------------------------- |
-| `workspaces` | {}      | list | list of workspace configs |
-
-### workspace
-
-| parameter   | default | type   | description                                             |
-| ----------- | ------- | ------ | ------------------------------------------------------- |
-| `path`      | nil     | string | path to your workspace                                  |
-| `max_depth` | 1       | number | maximum depth to sejrch for project folders             |
-| `patterns`  | nil     | list   | names of child files/directories to find project folder |
-
-**note**: when patterns is empty, all directories in workspace are considered as a project.
 
 
 ## inspiration
