@@ -9,9 +9,9 @@
 
 ## terminology
 
-**workspace**: a workspace is a folder that contains projects
-**project**: a project is any folder that contains a file/folder with name in configured patterns
-**session**: a session is a saved state of a project that can be saved and restored
+- **workspace**: a workspace is a folder that contains projects
+- **project**: a project is any folder that contains a file/folder with name in configured patterns
+- **session**: a session is a saved state of a project that can be saved and restored
 
 
 ## installation
