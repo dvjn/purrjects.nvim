@@ -34,7 +34,9 @@ local find_projects_prompt = function(opts)
                 actions.select_default:replace(function()
                     actions.close(prompt_buffer)
                     local selection = action_state.get_selected_entry()
+                    purrjects.save_project_session()
                     purrjects.switch_to_project(selection["value"])
+                    purrjects.restore_project_session()
                 end)
                 return true
             end,
