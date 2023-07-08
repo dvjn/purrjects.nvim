@@ -45,6 +45,21 @@ using **lazy.nvim**:
 **note:** this requires telescope to be installed.
 
 
+## configuration
+
+```lua
+require("purrjects").setup({
+    workspaces = {},
+
+    save_session_on_exit = false, -- automatically save the current session before exiting vim if you are inside a project directory
+    restore_session_on_enter = false, -- automatically restore session on vim startup when current working directory is in a project
+    restore_last_session_on_enter = false, -- automatically restore last session from any project when opening vim outside any project directory
+
+    pre_session_save_hook = function() end, -- function to run before saving the current session
+    post_session_restore_hook = function() end, -- function to run after restoring the current session
+})
+```
+
 ## inspiration
 
 - [projections.nvim](https://github.com/GnikDroy/projections.nvim)
