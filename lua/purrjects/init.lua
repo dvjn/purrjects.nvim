@@ -1,6 +1,7 @@
 local M = {}
 
 M._opts = {}
+M._projects = nil
 
 local create_projects_find_command = function(workspace)
     local workspace_path = workspace[1]
@@ -29,7 +30,7 @@ local create_projects_find_command = function(workspace)
     return command
 end
 
-M.list_projects = function()
+M._load_projects = function()
     local projects = {}
 
     for _, workspace in ipairs(M._opts.workspaces) do
@@ -49,7 +50,16 @@ M.list_projects = function()
         ::continue::
     end
 
-    return projects
+    M._projects = projects
+end
+
+M.refresh_projects = function()
+    M._load_projects()
+end
+
+M.list_projects = function()
+    if M._projects == nil then M._load_projects() end
+    return M._projects
 end
 
 M.switch_to_project = function(project)
