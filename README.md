@@ -1,20 +1,20 @@
 # 🐱 purrjects.nvim
 
-> a tiny project and session manager
+> 🐾 a tiny project and session manager
 
 - manages projects and sessions
 - integrates with telescope
 - written in lua
 
 
-## terminology
+## 🔠 terminology
 
 - **workspace**: a workspace is a directory that contains projects
 - **project**: a project is any directory that contains a file/directory with name in configured patterns
 - **session**: a session is a saved state of a project that can be saved and restored
 
 
-## installation
+## 📦 installation
 
 using **lazy.nvim**:
 
@@ -41,7 +41,7 @@ using **lazy.nvim**:
 **note:** this requires telescope to be installed.
 
 
-## configuration
+## 🎛️ configuration
 
 ```lua
 require("purrjects").setup({
@@ -71,6 +71,6 @@ require("purrjects").setup({
 })
 ```
 
-## inspiration
+## 🤗 inspiration
 
 - [projections.nvim](https://github.com/GnikDroy/projections.nvim)
