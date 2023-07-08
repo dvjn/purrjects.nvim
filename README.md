@@ -24,11 +24,7 @@ using **lazy.nvim**:
     config = function()
         -- run setup
         require("purrjects").setup({
-            workspaces = {
-                { "~/projects", patterns = { ".git" } }, -- patterns are the children files and directories that mark a directory as a project
-                { "~/repos", max_depth = 2, patterns = { ".git", ".svn" } }, -- you can find projects nested in workspace using max_depth value
-                { "~/scratch" }, -- when patterns is empty, all directories in workspace are considered as a project
-            },
+            -- plugin configuration
         })
 
         -- loading telescope plugin
@@ -49,14 +45,29 @@ using **lazy.nvim**:
 
 ```lua
 require("purrjects").setup({
-    workspaces = {},
+    workspaces = {
+        -- patterns are the children files and directories that mark a directory as a project
+        { "~/projects", patterns = { ".git" } },
 
-    save_session_on_exit = false, -- automatically save the current session before exiting vim if you are inside a project directory
-    restore_session_on_enter = false, -- automatically restore session on vim startup when current working directory is in a project
-    restore_last_session_on_enter = false, -- automatically restore last session from any project when opening vim outside any project directory
+        -- you can find projects nested in workspace using max_depth value
+        { "~/repos", max_depth = 2, patterns = { ".git", ".svn" } },
 
-    pre_session_save_hook = function() end, -- function to run before saving the current session
-    post_session_restore_hook = function() end, -- function to run after restoring the current session
+        -- when patterns is empty, all directories in workspace are considered as a project
+        { "~/scratch" },
+    },
+
+    -- automatically save the current session before exiting vim if you are inside a project directory
+    save_session_on_exit = false,
+    -- automatically restore session on vim startup when current working directory is in a project
+    restore_session_on_enter = false,
+    -- automatically restore last session from any project when opening vim outside any project directory
+    restore_last_session_on_enter = false,
+
+    -- function to run before saving the current session
+    pre_session_save_hook = function() end,
+    -- function to run after restoring the current session
+    post_session_restore_hook = function() end,
+
 })
 ```
 
